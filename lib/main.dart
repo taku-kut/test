@@ -25,12 +25,8 @@ class ListTest extends StatefulWidget {
 
 class _ListTestState extends State<ListTest> {
   int ListNumber = 0;
-  int total = 0;
   int displayListNumber = 0;
   final wordList = WordList();
-
-  List<List<bool>> _checked =
-      List.generate(28, (_) => List.generate(100, (_) => false));
 
   void setBandNumber(int inData) {
     setState(() {
@@ -41,8 +37,7 @@ class _ListTestState extends State<ListTest> {
 
   void _selectAll() {
     setState(() {
-      _checked[ListNumber] =
-          List<bool>.filled(_checked[ListNumber].length, true);
+      wordList.allTrueSelected(ListNumber);
     });
   }
 
@@ -105,11 +100,12 @@ class _ListTestState extends State<ListTest> {
                       color: Colors.white,
                       child: Container(
                         child: CheckboxListTile(
-                          value: _checked[ListNumber][index2],
+                          value: wordList.getSelected(index2, ListNumber),
                           controlAffinity: ListTileControlAffinity.leading,
                           onChanged: (value) {
                             setState(() {
-                              _checked[ListNumber][index2] = value!;
+                              wordList.setSelected(index2, ListNumber, value!);
+                              // _checked[ListNumber][index2] = value!;
                             });
                           },
                           title: Text(wordList.getEnglish(index2, ListNumber)),
@@ -144,7 +140,9 @@ class _ListTestState extends State<ListTest> {
                       '選択項目を追加',
                       style: TextStyle(fontSize: 16, color: Colors.black),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      wordList.addLearnList();
+                    },
                   ),
                 ],
               ),
